@@ -115,11 +115,9 @@ var imageCrop = {};
 			IC._drag_last_x = event_offset.x;
 			IC._drag_last_y = event_offset.y;
 			
-			window.thing = e;
-			
 		});
 		
-		IC._canvas.on('mouseup', function(e){
+		IC._canvas.on('mouseup mouseout', function(e){
 			
 			IC._is_dragging = false;
 			
@@ -153,6 +151,15 @@ var imageCrop = {};
 	
 	IC._read_input = function(file_field, e){
 		
+		// Unsupported Browser
+		if(!e.target.files){
+			
+			// TODO Proper error
+			alert('You are using an insecure, outdated browser. For your security, please upgrade to the latest version.');
+			
+			return false;
+		}
+		
 		// No files selected
 		if(!e.target.files.length){
 			return false;
@@ -163,7 +170,7 @@ var imageCrop = {};
 		// Check image type
 		if(!img_file.type.match('image.*')){
 			
-			// TODO throw Error? Optional error override?
+			// TODO Proper Error
 			console.log('Unsupported image type');
 			
 			return false;
@@ -347,6 +354,12 @@ var imageCrop = {};
 		
 		// Render
 		IC._render_image();
+		
+	};
+	
+	IC.read = function(){
+		
+		return IC._canvas[0].toDataURL();
 		
 	};
 	
