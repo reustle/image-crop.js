@@ -1,9 +1,17 @@
 
-var imageCrop = {};
-
-(function(){
+var ImageCrop = function(input_el, canvas_el, onload_callback){
 	
-	var IC = imageCrop;
+	var IC = this;
+	
+	// Save params
+	IC._file_field = $(input_el);
+	IC._canvas = $(canvas_el);
+	IC._canvas_ctx = IC._canvas[0].getContext('2d');
+	IC._onload_callback = onload_callback;
+	
+	// Save canvas details
+	IC._canvas_h = $(IC._canvas).height();
+	IC._canvas_w = $(IC._canvas).width();
 	
 	// The current offset for drawing the image on the canvas
 	IC._offset_x = 0;
@@ -52,16 +60,7 @@ var imageCrop = {};
 		
 	};
 	
-	IC.init = function(input_el, canvas_el, on_load_callback){
-		
-		// Save resources
-		IC._file_field = $(input_el);
-		IC._canvas = $(canvas_el);
-		IC._canvas_ctx = IC._canvas[0].getContext('2d');
-		
-		// Save canvas details
-		IC._canvas_h = $(IC._canvas).height();
-		IC._canvas_w = $(IC._canvas).width();
+	IC.init = function(){
 		
 		// Watch file input
 		IC._file_field.on('change', function(e){
@@ -70,8 +69,8 @@ var imageCrop = {};
 			if(IC._read_input(IC._file_field, e)){
 				
 				// If it is a valid image, run the load callback
-				if(on_load_callback){
-					on_load_callback();
+				if(IC._onload_callback){
+					IC._onload_callback();
 				}
 			
 			}
@@ -363,5 +362,8 @@ var imageCrop = {};
 		
 	};
 	
-})();
+	// Start
+	IC.init();
+	
+};
 
