@@ -14,5 +14,4 @@ Simple image cropping with canvas
 * Proper error on invalid file type
 * Use render trick to smooth image
 * Mobile support
-* Firefox mousemove event doesn't seem to work
 

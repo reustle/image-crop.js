@@ -85,13 +85,37 @@ var imageCrop = {};
 	
 	IC._attach_pan_events = function(){
 		
+		var get_event_offset = function(e){
+			
+			// Most browsers
+			if(e.offsetX){
+				return {
+					x : e.offsetX,
+					y : e.offsetY
+				}
+			}
+			
+			// Firefox
+			if(e.originalEvent.layerX){
+				return {
+					x : parseInt(e.originalEvent.layerX, 10),
+					y : parseInt(e.originalEvent.layerY, 10)
+				}
+			}
+			
+		};
+		
 		IC._canvas.on('mousedown', function(e){
 			
 			IC._is_dragging = true;
 			
+			var event_offset = get_event_offset(e);
+			
 			// Save the drag start position
-			IC._drag_last_x = e.offsetX;
-			IC._drag_last_y = e.offsetY;
+			IC._drag_last_x = event_offset.x;
+			IC._drag_last_y = event_offset.y;
+			
+			window.thing = e;
 			
 		});
 		
@@ -107,16 +131,18 @@ var imageCrop = {};
 				return;
 			}
 			
+			var event_offset = get_event_offset(e);
+			
 			// Calculate the offset adjustment
-			var add_offset_x = e.offsetX - IC._drag_last_x;
-			var add_offset_y = e.offsetY - IC._drag_last_y;
+			var add_offset_x = event_offset.x - IC._drag_last_x;
+			var add_offset_y = event_offset.y - IC._drag_last_y;
 			
 			// Adjust the offset
 			IC._adjust_offset(add_offset_x, add_offset_y);
 			
 			// Update last drag position
-			IC._drag_last_x = e.offsetX;
-			IC._drag_last_y = e.offsetY;
+			IC._drag_last_x = event_offset.x;
+			IC._drag_last_y = event_offset.y;
 			
 			// Render
 			IC._render_image();
