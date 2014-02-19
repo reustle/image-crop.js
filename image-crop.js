@@ -358,6 +358,10 @@ var ImageCrop = function(input_el, canvas_el, onload_callback){
 	
 	IC.read = function(){
 		
+		if(!IC._img){
+			return '';
+		}
+		
 		return IC._canvas[0].toDataURL();
 		
 	};

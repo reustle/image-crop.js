@@ -20,4 +20,5 @@ Simple image cropping and scaling with Canvas and the File API
 * Proper error on invalid file type
 * Use render trick to smooth image
 * Mobile support
+* Support double[click|tap] to zoom in
 
